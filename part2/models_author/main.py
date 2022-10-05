@@ -5,6 +5,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import prettytable
+from sqlalchemy import Integer, Column, String, ForeignKey
+from sqlalchemy.orm import relationship
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
@@ -15,11 +17,19 @@ db: SQLAlchemy = SQLAlchemy(app)
 class Author(db.Model):
     __tablename__ = "author"
     # TODO добавьте поля модели здесь
+    id=Column(Integer, primary_key=True)
+    first_name=Column(String)
+    last_name=Column(String)
 
 
 class Book(db.Model):
     __tablename__ = "book"
     # TODO добавьте поля модели здесь
+    id=Column(Integer, primary_key=True)
+    title=Column(String)
+    copy_right=Column(Integer)
+    author_id=(Integer, ForeignKey('author.id'))
+    author=relationship("Author")
 
 # Не удаляйте код ниже, он нужен для корректного
 # отображения созданной вами модели
